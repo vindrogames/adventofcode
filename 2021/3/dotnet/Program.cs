@@ -4,7 +4,7 @@ var datas = new List<string>();
 
 Boolean DEBUG = false;
 
-// Load data and put it in a list of integers
+// Load data and put it in a list of strings
 foreach (string line in System.IO.File.ReadLines(@"data.txt"))
 {  
     datas.Add(line);
@@ -37,9 +37,7 @@ for (int i=0; i<12; i++)
             numberOfOnes++;
         }
     }
-    //System.Console.WriteLine(numberOfCeros);
-    //System.Console.WriteLine(numberOfOnes);
-    //System.Console.WriteLine("--------------");
+
     if (numberOfCeros > numberOfOnes)
     {
         gamma_rate.Add("0");
@@ -51,32 +49,11 @@ for (int i=0; i<12; i++)
     }
 }
 
+int gamma_rate_decimal = BinaryStringListToDecimal(gamma_rate);
+int epsilon_rate_decimal = BinaryStringListToDecimal(epsilon_rate);
 
-int gamma_rate_decimal = 0;
-
-foreach (string bit in gamma_rate)
-{    
-    int temp = Int32.Parse(bit);
-    //System.Console.WriteLine(temp);
-    gamma_rate_decimal = 2*gamma_rate_decimal + temp;
-}
-
-//System.Console.WriteLine(gamma_rate_decimal);
-
-int epsilon_rate_decimal = 0;
-
-foreach (string bit in epsilon_rate)
-{    
-    int temp = Int32.Parse(bit);
-    //System.Console.WriteLine(temp);
-    epsilon_rate_decimal = 2*epsilon_rate_decimal + temp;
-}
-
-//System.Console.WriteLine(epsilon_rate_decimal);
-
-System.Console.WriteLine("Solution to part one:");
-System.Console.WriteLine(gamma_rate_decimal*epsilon_rate_decimal);
-
+System.Console.WriteLine("-------------------------------------------------------");
+System.Console.WriteLine("Solution to part 3.1: "+gamma_rate_decimal*epsilon_rate_decimal);
 System.Console.WriteLine("-------------------------------------------------------");
 
 int pos=0;
@@ -86,10 +63,8 @@ while (pos < 12 && datas.Count > 1)
     
     int numberOfCeros = 0;
     int numberOfOnes = 0;
-    //System.Console.WriteLine(pos);
     foreach (string data in datas)
-    {
-        
+    {        
         if (data[pos] == '0')
         {
             numberOfCeros++;
@@ -98,8 +73,7 @@ while (pos < 12 && datas.Count > 1)
         {
             numberOfOnes++;
         }
-    }
-    
+    }    
     
     List<string> temp = new List<string>();
 
@@ -128,24 +102,19 @@ while (pos < 12 && datas.Count > 1)
         datas.Remove(item);        
     }
     pos++;
-    /*foreach (string data in datas)
-    {
-        System.Console.WriteLine(data); 
-    }*/
-    //System.Console.WriteLine(pos); 
-    //System.Console.WriteLine(datas.Count); 
 }
 
-
-
+System.Console.WriteLine("oxygen generator rating");
+int oxygen = 0;
 foreach (string data in datas)
 {
-    System.Console.WriteLine(data);
+    System.Console.WriteLine("Binary: "+data);
+    System.Console.WriteLine("Decimal: "+BinaryStringToDecimal(data));
+    oxygen = BinaryStringToDecimal(data);
 }
 
 var datas_dos = new List<string>();
-
-// Load data and put it in a list of integers
+// Load data and put it in a list of strings
 foreach (string line in System.IO.File.ReadLines(@"data.txt"))
 {  
     datas_dos.Add(line);
@@ -158,8 +127,7 @@ while (pos < 12 && datas_dos.Count > 1)
     int numberOfCeros = 0;
     int numberOfOnes = 0;
     foreach (string data in datas_dos)
-    {
-        
+    {        
         if (data[pos] == '0')
         {
             numberOfCeros++;
@@ -169,9 +137,7 @@ while (pos < 12 && datas_dos.Count > 1)
             numberOfOnes++;
         }
     }
-    System.Console.WriteLine(numberOfCeros);
-    System.Console.WriteLine(numberOfOnes);
-    System.Console.WriteLine("--------------");
+
     List<string> temp = new List<string>();
 
     if (numberOfOnes >= numberOfCeros)
@@ -199,21 +165,54 @@ while (pos < 12 && datas_dos.Count > 1)
         datas_dos.Remove(item);
     }
     pos++;
-    /*foreach (string data in datas_dos)
-    {
-        System.Console.WriteLine(data); 
-    }
-    */
-    //System.Console.WriteLine(pos); 
-    //System.Console.WriteLine(datas_dos.Count); 
     
 }
 
-System.Console.WriteLine("oxigen");
+System.Console.WriteLine("CO2 scrubber rating");
 
+int co2 = 0;
 foreach (string data in datas_dos)
 {
-    System.Console.WriteLine(data);
+    System.Console.WriteLine("Binary: "+data);
+    System.Console.WriteLine("Decimal: "+BinaryStringToDecimal(data));
+    co2 = BinaryStringToDecimal(data);
+}
+System.Console.WriteLine("-------------------------------------------------------");
+System.Console.WriteLine("Solucion to part 3.2: "+(co2*oxygen));
+System.Console.WriteLine("-------------------------------------------------------");
+
+/*
+    This function takes a list of strings, but each string is only 1 character, and each
+    character is 1 binary number:
+    list-of-string = ["1","0","0","1","0","0","0","1"]
+    and then return the conversion of binary to decimal
+*/
+int BinaryStringListToDecimal(List<string> listBinary)
+{
+    int decimal_number = 0;
+    foreach (string bit in listBinary)
+    {    
+        int temp = Int32.Parse(bit);
+        //System.Console.WriteLine(temp);
+        decimal_number = 2*decimal_number + temp;
+    }
+    return decimal_number;
 }
 
-
+/*
+    This function takes a string, but each character of the string is a 
+    binary number:
+    string = "01000100101"
+    and then return the conversion of binary to decimal
+*/
+int BinaryStringToDecimal(string stringBinary)
+{
+    int decimal_number = 0;
+    foreach (char bit in stringBinary)
+    {    
+        string s = bit.ToString();
+        int temp = Int32.Parse(s);        
+        decimal_number = 2*decimal_number + temp;
+    }
+    return decimal_number;
+}
