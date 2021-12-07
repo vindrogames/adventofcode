@@ -73,50 +73,62 @@ foreach (string data in System.IO.File.ReadLines(@"data.txt"))
 
 bool hayBingo = false;
 int numero_extraido = -5;
-var queue = new Queue<int>(numbers_draw);
 
+var queue_second = new Queue<int>(numbers_draw);
 
-while (!hayBingo && queue.Count > 0)
+while (queue_second.Count > 0)
 {
-    numero_extraido = queue.Dequeue();
-    System.Console.WriteLine(numero_extraido);
+    numero_extraido = queue_second.Dequeue();
+    
     int tableros_comprobados = 0;
     foreach (Tablero tablero in tableros)
     {
         tablero.check_number(numero_extraido);
-        hayBingo = tablero.bingo();
-        if (hayBingo)
+        if (!tablero.getTerminado())
         {
-            System.Console.WriteLine("Bingo!!!");
-            tablero.print();
-            List<int> unmarked = tablero.unmarked();
-            int mult = 0;
-            foreach (int x in unmarked)
+            //tablero.check_number(numero_extraido);
+            hayBingo = tablero.bingo();
+            if (hayBingo)
             {
-                System.Console.Write(x+" ");
-                mult = mult + x;
+                System.Console.WriteLine(numero_extraido);
+                System.Console.WriteLine("Bingo!!!");
+                tablero.print();
+                List<int> unmarked = tablero.unmarked();
+                int mult = 0;
+                foreach (int x in unmarked)
+                {
+                    System.Console.Write(x+" ");
+                    mult = mult + x;
+                }
+                //System.Console.WriteLine("Suma: "+mult);
+                mult = mult * numero_extraido;
+                System.Console.WriteLine("Resultado: "+mult);
             }
-            System.Console.WriteLine("Suma: "+mult);
-            mult = mult * numero_extraido;
-            System.Console.WriteLine("Resultado: "+mult);
-            break;
-        }
+        }            
+        
         tableros_comprobados++;        
     }
-    System.Console.WriteLine("Compruebo: "+tableros_comprobados+" tableros.");
-
+    //System.Console.WriteLine("Compruebo: "+tableros_comprobados+" tableros.");
+    int count = 0;
+    foreach (Tablero tablero in tableros)
+    {
+        if (tablero.getTerminado())
+        {
+            count++;
+        }
+    }
+    //System.Console.WriteLine("quedan: "+count+" tableros");
 }
 
-foreach (Tablero tablero in tableros)
-{
-    //tablero.print();
-}
+
+
+
 
 public class Tablero
 {
     int[,] numbers = new int[5,5];
     bool[,] checks = new bool[5,5];
-
+    bool terminado;
     bool[,] real_marked = new bool[5,5];
     public Tablero(int[,] numeros )
     {
@@ -129,6 +141,7 @@ public class Tablero
                 this.real_marked[i,j] = false;
             }
         }
+        this.terminado = false;
     }
 
     public void setCheck(int i,int j)
@@ -171,41 +184,49 @@ public class Tablero
     public bool bingo()
     {
         bool bingo = false;
+        bool bingo_vertical=false;
+        bool bingo_horizontal=false;
         //check for horizontal
-        for (int i=0; i<5; i++)
+        int i=0;
+        int j=0;
+        while (!bingo_horizontal && i<5)
         {
-            bingo = this.checks[i,0] && this.checks[i,1] && this.checks[i,2] && this.checks[i,3] && this.checks[i,4];
-            if (bingo)
+            bingo_horizontal = this.checks[i,0] && this.checks[i,1] && this.checks[i,2] && this.checks[i,3] && this.checks[i,4];
+            if (bingo_horizontal)
             {
                 real_marked[i,0] = true;
                 real_marked[i,1] = true;
                 real_marked[i,2] = true;
                 real_marked[i,3] = true;
                 real_marked[i,4] = true;
-                System.Console.WriteLine("Bingo horizontal!");
-                break;
-                
+                this.terminado = true;
+                //System.Console.WriteLine("Bingo horizontal!");
+                //break;                
             }
+            i++;
         }
         //check for vertical
-        for (int j=0; j<5; j++)
+        while (!bingo_vertical && j<5)
         {
-            bingo = this.checks[0,j] && this.checks[1,j] && this.checks[2,j] && this.checks[3,j] && this.checks[4,j];
-            if (bingo)
+            bingo_vertical = this.checks[0,j] && this.checks[1,j] && this.checks[2,j] && this.checks[3,j] && this.checks[4,j];
+            if (bingo_vertical)
             {
                 real_marked[0,j] = true;
                 real_marked[1,j] = true;
                 real_marked[2,j] = true;
                 real_marked[3,j] = true;
                 real_marked[4,j] = true;
-                System.Console.WriteLine("Bingo vertical!");
-                break;
+                this.terminado = true;
+                //System.Console.WriteLine("Bingo vertical!");
+                //break;
+                
             }
+            j++;
         }
         //check both diagonales
         //bingo = this.checks[0,0] && this.checks[1,1] && this.checks[2,2] && this.checks[3,3] && this.checks[4,4];
         //bingo = this.checks[4,0] && this.checks[3,1] && this.checks[2,2] && this.checks[1,3] && this.checks[0,4];
-        return bingo;
+        return bingo_vertical || bingo_horizontal;
     }
 
     public void print()
@@ -232,5 +253,10 @@ public class Tablero
                 }
             }            
         }
+    }
+
+    public bool getTerminado()
+    {
+        return terminado;
     }
 }
