@@ -7,8 +7,6 @@ var tableros = new List<Tablero>();
 
 int[,] tablero_temp = new int[5,5];
 
-Boolean DEBUG = false;
-
 // Load data and get the numbers to draw and the boards
 int line = 0;
 int contador = 0;
@@ -182,8 +180,7 @@ public class Tablero
     }
 
     public bool bingo()
-    {
-        bool bingo = false;
+    {        
         bool bingo_vertical=false;
         bool bingo_horizontal=false;
         //check for horizontal
@@ -200,8 +197,6 @@ public class Tablero
                 real_marked[i,3] = true;
                 real_marked[i,4] = true;
                 this.terminado = true;
-                //System.Console.WriteLine("Bingo horizontal!");
-                //break;                
             }
             i++;
         }
@@ -217,8 +212,6 @@ public class Tablero
                 real_marked[3,j] = true;
                 real_marked[4,j] = true;
                 this.terminado = true;
-                //System.Console.WriteLine("Bingo vertical!");
-                //break;
                 
             }
             j++;
