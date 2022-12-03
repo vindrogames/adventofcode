@@ -1,0 +1,54 @@
+//All data in column A, copied and pasted from input
+
+function day1() {
+
+  var ss = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('day 1');
+  var ssData = ss.getDataRange().getValues();
+  var elfCals = [];
+  var maxCals = 0;
+  var secondMaxCals = 0;
+  var thirdMaxCals = 0;
+  var tempCals = 0;
+  var i = 1;
+  var j = 1;
+  var k = 1;
+  var l = 1;
+
+  while (i < ss.getLastRow()) {
+    if (!ssData[i][0]) {
+      elfCals.push(tempCals);
+      var tempCals = 0;
+      i++;
+    }
+    var tempCals = parseInt(tempCals) + parseInt(ssData[i][0]);
+    i++;
+  }
+
+  Logger.log(elfCals);
+  maxCals = elfCals[0];
+  while (elfCals[j]) {
+    if (elfCals[j] > maxCals) {
+      maxCals = elfCals[j];
+    }
+    j++;
+  }
+  Logger.log(maxCals);
+
+  secondMaxCals = elfCals[0];
+  while (elfCals[k]) {
+    if (elfCals[k] > secondMaxCals && elfCals[k] < maxCals) {
+      secondMaxCals = elfCals[k];
+    }
+    k++;
+  }
+  Logger.log(secondMaxCals);
+
+  thirdMaxCals = elfCals[0];
+  while (elfCals[l]) {
+    if (elfCals[l] > thirdMaxCals && elfCals[l] < secondMaxCals) {
+      thirdMaxCals = elfCals[l];
+    }
+    l++;
+  }
+  Logger.log(thirdMaxCals);
+}
