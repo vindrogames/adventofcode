@@ -1,0 +1,112 @@
+//Data on Day 2 Sheet in column A, copied and pasted from input. Two seperate functions, one for each part. VERY SIMILAR
+
+function day2() {
+
+  var ss = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('day 2');
+  var ssData = ss.getDataRange().getValues();
+  var i = 1;
+  var tempString = "";
+  var score = 0;
+
+  //Logger.log(tempString[0]);
+  //Logger.log(tempString[0][3]);
+  Logger.log(ssData[1][0]);
+  Logger.log(tempString.substring(0,1));
+  Logger.log(tempString.substring(2,3));
+
+  while (i < ss.getLastRow()) {
+    var tempString = ssData[i][0].toString();
+    Logger.log(tempString.substring(0,1) + " " + tempString.substring(2,3));
+    if (tempString.substring(0,1) === 'A') {
+      if (tempString.substring(2,3) === 'X') {
+        score = score + 4;
+      }
+      else if (tempString.substring(2,3) === 'Y') {
+        score = score + 8;
+      }
+      else if (tempString.substring(2,3) === 'Z') {
+        score = score + 3;
+      }
+    }
+    if (tempString.substring(0,1) === "B") {
+      if (tempString.substring(2,3) === "X") {
+        score = score + 1;
+      }
+      else if (tempString.substring(2,3) === "Y") {
+        score = score + 5;
+      }
+      else if (tempString.substring(2,3) === "Z") {
+        score = score + 9;
+      }
+    }
+    if (tempString.substring(0,1) === "C") {
+      if (tempString.substring(2,3) === "X") {
+        score = score + 7;
+      }
+      else if (tempString.substring(2,3) == "Y") {
+        score = score + 2;
+      }
+      else if (tempString.substring(2,3) == "Z") {
+        score = score + 6;
+      }
+    }
+    Logger.log(score);
+    i++;
+  }
+  Logger.log(score);
+}
+
+function day2_2() {
+var ss = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('day 2');
+  var ssData = ss.getDataRange().getValues();
+  var i = 1;
+  var tempString = "";
+  var score = 0;
+
+  //Logger.log(tempString[0]);
+  //Logger.log(tempString[0][3]);
+  Logger.log(ssData[1][0]);
+  Logger.log(tempString.substring(0,1));
+  Logger.log(tempString.substring(2,3));
+
+  while (i < ss.getLastRow()) {
+    var tempString = ssData[i][0].toString();
+    Logger.log(tempString.substring(0,1) + " " + tempString.substring(2,3));
+    if (tempString.substring(2,3) === 'X') {
+      if (tempString.substring(0,1) === 'A') {
+        score = score + 3;
+      }
+      else if (tempString.substring(0,1) === 'B') {
+        score = score + 1;
+      }
+      else if (tempString.substring(0,1) === 'C') {
+        score = score + 2;
+      }
+    }
+    if (tempString.substring(2,3) === "Y") {
+      if (tempString.substring(0,1) === "A") {
+        score = score + 4;
+      }
+      else if (tempString.substring(0,1) === "B") {
+        score = score + 5;
+      }
+      else if (tempString.substring(0,1) === "C") {
+        score = score + 6;
+      }
+    }
+    if (tempString.substring(2,3) === "Z") {
+      if (tempString.substring(0,1) === "A") {
+        score = score + 8;
+      }
+      else if (tempString.substring(0,1) == "B") {
+        score = score + 9;
+      }
+      else if (tempString.substring(0,1) == "C") {
+        score = score + 7;
+      }
+    }
+    Logger.log(score);
+    i++;
+  }
+  Logger.log(score);
+}
