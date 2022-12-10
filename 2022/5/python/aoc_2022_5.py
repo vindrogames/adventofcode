@@ -1,51 +1,83 @@
 import re
 
-test_data = ["2-4,6-8","2-3,4-5","5-7,7-9","2-8,3-7","6-6,4-6","4-4,2-34"]
+crates_data = "crates.txt"
+test_data = ["move 1 from 2 to 1","move 3 from 1 to 3","move 2 from 2 to 1","move 1 from 1 to 2"]
 
-file = open("input.txt","r")
-
-#file = test_data
-
-total_score = 0
-
-for line in file:
-    result = re.search(r"(\d+)-(\d+),(\d+)-(\d+)", line)
-    #print(result.groups())
-    first1 = int(result.group(1))
-    first2 = int(result.group(2))
-    second1 = int(result.group(3))
-    second2 = int(result.group(4))
-    #print(second1)
-
-    if ( (first1 <= second1) and (first2 >= second2)):
-        #print(result.groups())
-        total_score = total_score + 1
-    elif ( (second1 <= first1) and (second2 >= first2)):
-        #print(result.groups())
-        total_score = total_score + 1
-
-print(total_score)
-
-############ PART 2
-
-test_data = ["8-44,6-8","2-3,4-5","5-7,7-9","2-8,3-7","6-6,4-6","2-6,4-8"]
-
-file = open("input.txt","r")
+file = open(crates_data,"r")
 
 #file = test_data
 
-total_score = 0
+crates = []
 
-count = 0
-lineas = []
+primera_linea = 0
+cuenta_linea = 0
 
 for line in file:
-    result = re.search(r"(\d+)-(\d+),(\d+)-(\d+)", line)
-    first1 = int(result.group(1))
-    first2 = int(result.group(2))
-    second1 = int(result.group(3))
-    second2 = int(result.group(4))
-    if ( (first2 >= second1) and first1 <= second2):
-        print(result.groups())
-        total_score = total_score + 1
-print(total_score)
+    cuenta_linea = len(line)
+
+print((cuenta_linea + 1)//4)
+
+numero_columnas = (cuenta_linea + 1)//4
+
+for i in range(numero_columnas):
+    crates.append([])
+
+
+
+file = open(crates_data,"r")
+
+for line in file:
+    initial_char = 1
+    secuencia = 0    
+    while (initial_char < len(line)):
+        character = line[initial_char]        
+        if (character != ' ' and (not re.search('\d+', character))):
+            #print(character)
+            crates[secuencia].append(character)        
+        initial_char = initial_char + 4
+        secuencia = secuencia + 1
+
+#print(crates)
+
+#invert crates inside array
+
+for a in crates:
+    a.reverse()
+
+print(crates)
+
+file_data = open("input.txt","r")
+
+#file_data = test_data
+
+for line in file_data:
+    result = re.search(r"move (\d+) from (\d+) to (\d+)", line)
+    how_many = int(result.group(1))
+    from_column = int(result.group(2))
+    to_column = int(result.group(3))
+    #print(how_many,from_column,to_column)
+
+    item_stack = []
+
+    for i in range(how_many):
+        # PART 1 uncomment
+        #item = crates[from_column-1].pop()
+        #crates[to_column-1].append(item)
+        # PART 1 end
+
+        # PART 2
+        item_stack.append(crates[from_column-1].pop())
+    
+    # PART 2 commen the whole for
+    for i in range(how_many):
+        crates[to_column-1].append(item_stack.pop())
+    # end of PART 2
+
+print(crates)
+
+for a in crates:
+    print(a.pop())
+
+##########################################
+# PART 2
+
