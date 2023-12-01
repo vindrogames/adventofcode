@@ -3,27 +3,18 @@ using System.IO;
 
 class Program
 {
-    static void Main()
+
+    private static void problem1()
     {
+        Console.WriteLine("function 1");
         string path = @"data.txt";
         
         //path = @"test.txt";
 
         int suma = 0;
 
-        Dictionary<string, string> letterNumbers = new Dictionary<string, string>();
-        letterNumbers.Add("one","o1e");
-        letterNumbers.Add("two","t2o");
-        letterNumbers.Add("three","t3e");
-        letterNumbers.Add("four","f4r");
-        letterNumbers.Add("five","f5e");
-        letterNumbers.Add("six","s6x");
-        letterNumbers.Add("seven","s7n");
-        letterNumbers.Add("eight","e8t");
-        letterNumbers.Add("nine","n9e");
-
-        List<KeyValuePair<string, string>> sortedLetterNumbers = letterNumbers.ToList();  
-        sortedLetterNumbers.Sort((pair1, pair2) => pair2.Key.Length.CompareTo(pair1.Key.Length));  
+        
+        
 
         try
         {
@@ -67,8 +58,24 @@ class Program
             Console.WriteLine(ex.Message);
         }
         Console.WriteLine(suma);
+    }
 
-        // PART 2
+    public static void problem2()
+    {
+        string path = @"data.txt";
+        
+        //path = @"test.txt";
+
+        Dictionary<string, int> letterNumbers = new Dictionary<string, int>();
+        letterNumbers.Add("one",1);
+        letterNumbers.Add("two",2);
+        letterNumbers.Add("three",3);
+        letterNumbers.Add("four",4);
+        letterNumbers.Add("five",5);
+        letterNumbers.Add("six",6);
+        letterNumbers.Add("seven",7);
+        letterNumbers.Add("eight",8);
+        letterNumbers.Add("nine",9);
 
         try
         {
@@ -78,72 +85,56 @@ class Program
                 int sumados = 0;
                 foreach (string s in readText)    
                 {
-                    string input = s;  
-                    string output = string.Empty;   
-                    while(input.Length > 0)      
-                    {      
-                        bool replaced = false;      
-                        for (int i = input.Length; i > 0; i--)    
-                        {    
-                            foreach (KeyValuePair<string, string> pair in letterNumbers)    
-                            {    
-                                if (input.Substring(0, i).Equals(pair.Key))    
-                                {    
-                                    string tempInput = input.Remove(0, i);  
-                                    
-                                    // Check if the remaining part of the string begins with another word from the dictionary  
-                                    if (!letterNumbers.Keys.Any(key => tempInput.StartsWith(key)))  
-                                    {  
-                                        output += pair.Value.ToString();    
-                                        input = tempInput;    
-                                        replaced = true;    
-                                        break;    
-                                    }    
-                                }    
-                            }    
-                            if (replaced) break;    
-                        }      
-                        if(!replaced)      
-                        {      
-                            output += input[0];      
-                            input = input.Substring(1);    
-                        }      
-                    }
-                    //Console.WriteLine(output); 
-
-                    
-                    var digits = new String(output.Where(char.IsDigit).ToArray());  
-                    if(digits.Length > 0)
+                    string newString = "";
+                    for (int i=0; i< s.Length; i++)
                     {
-                        if (digits.Length == 1)
-                        {  
-                            string newNumberStr = digits[0] + (digits.Length > 1 ? digits[digits.Length-1].ToString() : "");  
-                            newNumberStr = newNumberStr + newNumberStr;
-                            int newNumber = int.Parse(newNumberStr);  
-                            Console.WriteLine($"The new number formed from the first and last digits in '{s}' is {newNumber}.");
-                            sumados = sumados + newNumber;
-                            Console.WriteLine(sumados);
-                            
-                        }  
-                        else
+                        for (int j=0; j < s.Length - i +1 ; j++)
                         {
-                            string newNumberStr = digits[0] + (digits.Length > 1 ? digits[digits.Length-1].ToString() : "");                          
-                            int newNumber = int.Parse(newNumberStr);  
-                            Console.WriteLine($"The new number formed from the first and last digits in '{s}' is {newNumber}.");
-                            sumados = sumados + newNumber;
-                            Console.WriteLine(sumados);
+                            string subString = s.Substring(i,j);
                             
-                        }
-                        
-                        
-                    }
-                    else  
-                    {  
-                        Console.WriteLine($"The string '{s}' does not contain a number.");  
-                    } 
+                            // Now we will check if the substring is a number of single digit
+                            if (subString.Length == 1)
+                            {
+                                if (Int32.TryParse(subString, out int numValue))
+                                {
+                                    
+                                    newString = newString + subString;
+                                }
+                            }
 
+                            foreach (KeyValuePair<string, int> kvp in letterNumbers)
+                            {
+                                if (subString == kvp.Key)
+                                {
+                                    //Console.WriteLine(kvp.Value);
+                                    newString = newString + kvp.Value;
+                                }
+                            }
+                        }
+                    }
+                    //Console.WriteLine(newString);
+                    string firstNumber = "";
+                    string secondNumber = "";
+                    if (newString.Length > 1)
+                    {
+                        firstNumber = newString.Substring(0,1);
+                        secondNumber = newString.Substring(newString.Length-1,1);
+                    }
+                    else
+                    {
+                        firstNumber = newString.Substring(0,1);
+                        secondNumber = newString.Substring(newString.Length-1,1);
+                    }
+                    string finalNumber = firstNumber + secondNumber;
+                    //Console.WriteLine(finalNumber);
+                    if (Int32.TryParse(finalNumber, out int numValueLast))
+                    {
+                        
+                        sumados = sumados + numValueLast;
+                    }
 
                 }
+                Console.WriteLine(sumados);
                 
             }
             else
@@ -157,7 +148,13 @@ class Program
         }
 
         
+    }
+
+    static void Main()
+    {
         
+        problem1();
+        problem2();
     }
     
     
