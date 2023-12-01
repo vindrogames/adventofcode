@@ -10,6 +10,7 @@ class Program
         string path = @"data.txt";
         
         //path = @"test.txt";
+        
 
         int suma = 0;
 
@@ -65,6 +66,7 @@ class Program
         string path = @"data.txt";
         
         //path = @"test.txt";
+        //path = @"maik.txt";
 
         Dictionary<string, int> letterNumbers = new Dictionary<string, int>();
         letterNumbers.Add("one",1);
