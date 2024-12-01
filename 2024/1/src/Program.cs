@@ -3,17 +3,14 @@ Console.WriteLine("Hello, World!");
 
 const bool TEST = false;
 string dataFile = "";
-int numDigits = 0;
 
 if (TEST)
 {
     dataFile = "test.txt";
-    numDigits = 1;
 }
 else
 {
     dataFile = "data.txt";
-    numDigits = 5;
 }
 
 
@@ -21,21 +18,25 @@ else
 try
 {
     List<int> group1 = new List<int>();
-    List<int> group2 = new List<int>();
+
+    // I changed from 'new List<int>()' to '[]' it was a recommendation to simplify by the compiler
+    List<int> group2 = [];
     
     using StreamReader reader = new(dataFile);
-    string line;
+    
+    // changed from string -> string? to indicate that the variable could be nullable (it was a warning)
+    string? line;
     while ((line = reader.ReadLine()) != null)
     {      
         string[] subs = line.Split("   ");
         
         if (subs.Length == 2)
         {
-            int n1;
-            Int32.TryParse(subs[0],out n1);
+            // i changed from 'Int32.TryParse...' to '_ = int.TryParse...' first recommendation to simplif from Int32 to int
+            // then I added '_ ='
+            _ = int.TryParse(subs[0], out int n1);
             group1.Add(n1);
-            int n2;
-            Int32.TryParse(subs[1],out n2);
+            Int32.TryParse(subs[1], out int n2);
             group2.Add(n2);
         }
     }
@@ -58,7 +59,7 @@ try
 
         if (enum1.Current > enum2.Current)
         {
-            totalDistance = totalDistance + (enum1.Current - enum2.Current);
+            totalDistance += enum1.Current - enum2.Current;
         }
         else
         {
@@ -83,11 +84,11 @@ try
         {
             if (num == enumpart2_1.Current)
             {
-                count = count + 1;
+                count++;
             }
         }
 
-        similarity = similarity + enumpart2_1.Current * count;
+        similarity += enumpart2_1.Current * count;
         
         numAvailable = enumpart2_1.MoveNext();
     }
