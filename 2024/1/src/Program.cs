@@ -66,12 +66,33 @@ try
         }
 
         numAvailable = enum1.MoveNext();
-        enum2.MoveNext();
-
-        
+        enum2.MoveNext();        
     }
 
     Console.WriteLine(totalDistance);
+
+    List<int>.Enumerator enumpart2_1 = group1.GetEnumerator();  
+    numAvailable = enumpart2_1.MoveNext();
+    
+    int similarity = 0;
+
+    while (numAvailable)
+    {
+        int count = 0;
+        foreach (int num in group2)
+        {
+            if (num == enumpart2_1.Current)
+            {
+                count = count + 1;
+            }
+        }
+
+        similarity = similarity + enumpart2_1.Current * count;
+        
+        numAvailable = enumpart2_1.MoveNext();
+    }
+
+    Console.WriteLine(similarity);
     
 }
 catch (IOException e)
