@@ -1,0 +1,2 @@
+export IMAGE="dotnet7"
+export PROJECT="aoc2023-2"
