@@ -1,5 +1,7 @@
-﻿const bool TEST = true;
+﻿const bool TEST = false;
 string dataFile = "";
+
+const bool PART2 = true;
 
 if (TEST)
 {
@@ -98,29 +100,106 @@ try
         {
             safeReports++;
         }
+        else //if it is not safe try to remove items until is safe
+        {
+            if (PART2)
+            {
+                List<int> shortList = [];
+                foreach (string num in subs)
+                {   
+                    _ = int.TryParse(num, out int numTemp);
+                    shortList.Add(numTemp);    
+                    
+                }
+                for (int j=0; j<shortList.Count; j++)
+                {
+                    List<int> shortListClone =new List<int>(shortList);
+                    shortListClone.RemoveAt(j);
+
+                    bool isSafedos = false;  
+            
+                    bool isRisingdos = false;
+                    bool isDowningdos = false;
+                    //lets check if its ordered upwards
+                    for (int i=0; i<shortListClone.Count - 1; i++)
+                    {                    
+                        if (shortListClone[i] < shortListClone[i+1])
+                        {
+                            isRisingdos = true;
+                        }
+                        else
+                        {
+                            isRisingdos = false;
+                            break;
+                        }
+                    }
+
+                    for (int i=0; i<shortListClone.Count - 1; i++)
+                    {
+                        
+                        if (shortListClone[i] > shortListClone[i+1])
+                        {
+                            isDowningdos = true;
+                        }
+                        else
+                        {
+                            isDowningdos = false;
+                            break;
+                        }
+                    }
+
+                    if (isRisingdos)
+                    {
+                        for (int i=0; i<shortListClone.Count - 1; i++)
+                        {
+                            _ = int.TryParse(subs[i], out int n1);
+                            _ = int.TryParse(subs[i+1], out int n2);
+                            if (((shortListClone[i+1] - shortListClone[i]) > 0) && ((shortListClone[i+1] - shortListClone[i]) < 4))
+                            {
+                                isSafedos = true;
+                            }
+                            else
+                            {
+                                isSafedos = false;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (isDowningdos)
+                    {
+                        for (int i=0; i<shortListClone.Count - 1; i++)
+                        {
+                            _ = int.TryParse(subs[i], out int n1);
+                            _ = int.TryParse(subs[i+1], out int n2);
+                            if (((shortListClone[i] - shortListClone[i+1]) > 0) && ((shortListClone[i] - shortListClone[i+1]) < 4))
+                            {
+                                isSafedos = true;
+                            }
+                            else
+                            {
+                                isSafedos = false;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (isSafedos)
+                    {
+                        safeReports++;
+                        break;
+                    }
+                    
+                }
+            }
+        }
         
     }
     Console.WriteLine(safeReports);
 
     // Part 2: we will add the fully safe, and now we will remove 1 elemnt each time
 
-    using StreamReader reader2 = new(dataFile);
-    
-    // changed from string -> string? to indicate that the variable could be nullable (it was a warning)
-    string? line2;
-
-    while ((line2 = reader2.ReadLine()) != null)
-    {      
-        string[] subs = line2.Split(" ");
-        
-        for (int j=0; j<subs.Length; j++)
-        {
-            List<string> subsClone = (List<string>)subs.Clone();
-            subsClone.RemoveAt(j);
-            Console.WriteLine(subsClone);
-        }
-        
-    }
+   
     
 }
 catch (IOException e)
