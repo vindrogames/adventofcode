@@ -1,4 +1,4 @@
-﻿const bool TEST = false;
+﻿const bool TEST = true;
 string dataFile = "";
 
 if (TEST)
@@ -101,6 +101,26 @@ try
         
     }
     Console.WriteLine(safeReports);
+
+    // Part 2: we will add the fully safe, and now we will remove 1 elemnt each time
+
+    using StreamReader reader2 = new(dataFile);
+    
+    // changed from string -> string? to indicate that the variable could be nullable (it was a warning)
+    string? line2;
+
+    while ((line2 = reader2.ReadLine()) != null)
+    {      
+        string[] subs = line2.Split(" ");
+        
+        for (int j=0; j<subs.Length; j++)
+        {
+            List<string> subsClone = (List<string>)subs.Clone();
+            subsClone.RemoveAt(j);
+            Console.WriteLine(subsClone);
+        }
+        
+    }
     
 }
 catch (IOException e)
