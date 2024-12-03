@@ -1,3 +1,0 @@
-export IMAGE="dotnet8"
-export PROJECT="aoc2024-1"
-export FRAMEWORK="net8.0"
