@@ -68,17 +68,33 @@ try
     int sumaFinal = 0;   
     while ((line = readerPart2.ReadLine()) != null)
     {
-        string pattern = @"^.+don't\(\)|do\(\)";
-        MatchCollection collection = Regex.Matches(line,pattern);
-        
-        foreach (Match match in collection)
+        string pattern = @"^.+?don't\(\)";
+        Regex regexFirstPart = new Regex(pattern);
+        Match m = regexFirstPart.Match(line,0);        
+        if (m.Success)
         {
-            Console.WriteLine(match.Groups[1].Value);          
-            
+            //Console.WriteLine(m.Value);   
+            sumaFinal += Extractor(m.Value);     
         }
-        //sumaFinal += Extractor(line);
+        pattern = @"do\(\).+?(?!don't\(\))$";
+        Regex regexSecondPart = new Regex(pattern);
+        m = regexSecondPart.Match(line,0);        
+        if (m.Success)
+        {
+            //Console.WriteLine(m.Value);   
+            sumaFinal += Extractor(m.Value);     
+        }
+
+        pattern = @"do\(\).+?don't\(\)";
+        Regex regexThirdPart = new Regex(pattern);
+        m = regexThirdPart.Match(line,0);        
+        if (m.Success)
+        {
+            //Console.WriteLine(m.Value);   
+            sumaFinal += Extractor(m.Value);     
+        }
     }
-    //Console.WriteLine(sumaFinal);
+    Console.WriteLine(sumaFinal);
 }
 catch (IOException e)
 {
