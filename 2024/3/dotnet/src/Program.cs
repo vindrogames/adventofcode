@@ -64,36 +64,47 @@ try
     using StreamReader readerPart2 = new(dataFilePart2);
     
     // changed from string -> string? to indicate that the variable could be nullable (it was a warning)
-    string? line; 
-    int sumaFinal = 0;   
-    while ((line = readerPart2.ReadLine()) != null)
+   
+    int sumaFinal = 0;
+    
+    string? line2; 
+    string line3 = string.Empty;
+    while ((line2 = readerPart2.ReadLine()) != null)
     {
-        string pattern = @"^.+?don't\(\)";
-        Regex regexFirstPart = new Regex(pattern);
-        Match m = regexFirstPart.Match(line,0);        
-        if (m.Success)
-        {
-            //Console.WriteLine(m.Value);   
-            sumaFinal += Extractor(m.Value);     
-        }
-        pattern = @"do\(\).+?(?!don't\(\))$";
-        Regex regexSecondPart = new Regex(pattern);
-        m = regexSecondPart.Match(line,0);        
-        if (m.Success)
-        {
-            //Console.WriteLine(m.Value);   
-            sumaFinal += Extractor(m.Value);     
-        }
-
-        pattern = @"do\(\).+?don't\(\)";
-        Regex regexThirdPart = new Regex(pattern);
-        m = regexThirdPart.Match(line,0);        
-        if (m.Success)
-        {
-            //Console.WriteLine(m.Value);   
-            sumaFinal += Extractor(m.Value);     
-        }
+        line3 += line2;
     }
+    
+    string pattern = @"^.+?(don't\(\)|do\(\))";
+    Regex regexFirstPart = new Regex(pattern);
+    Match m = regexFirstPart.Match(line3,0);        
+    if (m.Success)
+    {
+        //Console.WriteLine(m.Value);   
+        sumaFinal += Extractor(m.Value);     
+    }
+    
+    /*
+    pattern = @"do\(\).+?(?!don't\(\))$";
+    Regex regexSecondPart = new Regex(pattern);
+    m = regexSecondPart.Match(line,0);        
+    if (m.Success)
+    {
+        //Console.WriteLine(m.Value);   
+        sumaFinal += Extractor(m.Value);     
+    }
+    */
+
+    pattern = @"do\(\).+?(don't\(\)|\z)";
+    Regex regexThirdPart = new Regex(pattern);
+    //m = regexThirdPart.Match(line,0);        
+    MatchCollection collection = Regex.Matches(line3,pattern);
+    foreach (Match match in collection)
+    {
+        //Console.WriteLine(match.Groups[1].Value +' '+ match.Groups[2].Value);
+    
+        sumaFinal += Extractor(match.Value);
+    }
+    
     Console.WriteLine(sumaFinal);
 }
 catch (IOException e)
