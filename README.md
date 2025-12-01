@@ -1,5 +1,9 @@
 # Advent of Code
 
+## 2025
+
+https://adventofcode.com/2025
+
 ## 2024
 
 https://adventofcode.com/2024
