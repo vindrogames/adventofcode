@@ -1,3 +1,0 @@
-export IMAGE="dotnet10"
-export PROJECT="aoc2025-1"
-export FRAMEWORK="net10.0"
