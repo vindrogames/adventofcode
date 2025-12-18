@@ -1,1 +1,0 @@
-docker run -v $(pwd)/src:$(pwd)/src -it $IMAGE sh -c "cd $(pwd)/src; dotnet run"
